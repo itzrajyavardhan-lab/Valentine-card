@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Letter Animation</title>
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #FFF1E6;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    /* Envelope */
+    .envelope {
+      width: 300px;
+      height: 230px;
+      background: #D90429;
+      position: relative;
+      z-index: 10;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: transform 0.4s;
+    }
+
+    .envelope:hover {
+      transform: scale(1.05);
+    }
+
+    .envelope::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 50;
+      height: 50;
+      border-left: 150px solid transparent;
+      border-right: 150px solid transparent;
+      border-top: 120px solid #9D0208;
+    }
+
+    /* Letter */
+    .letter {
+      width: 260px;
+      padding: 20px;
+      background: rgb(250, 169, 169);
+      border-radius: 8px;
+      text-align: center;
+      position: absolute;
+      top: 50%;
+      opacity: 0;
+      transform: translateY(40px);
+      z-index: 10;
+      transition: 0.6s ease;
+      box-shadow: 0 10px 25px rgba(150, 147, 147, 0.2);
+    }
+
+    /* Particles container behind content */
+    .particles {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .heart {
+      width: 12px;
+      height: 12px;
+      position: absolute;
+      transform: rotate(45deg) scale(0.9);
+      transform-origin: center center;
+      animation: floatUp 3s ease-out forwards;
+    }
+
+    .heart:before,
+    .heart:after {
+      content: '';
+      width: 12px;
+      height: 12px;
+      background: #ff6b81;
+      border-radius: 50%;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .heart:before { left: -6px; }
+    .heart:after { top: -6px; }
+
+    @keyframes floatUp {
+      0% { opacity: 0; transform: translateY(0) rotate(45deg) scale(0.6); }
+      10% { opacity: 1; }
+      100% { opacity: 0; transform: translateY(-80px) rotate(45deg) scale(1); }
+    }
+
+    .letter.show {
+      opacity: 1;
+      transform: translateY(-50%);
+    }
+
+    h2 {
+      margin-top: 0;
+      color: rgb(160, 28, 52);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Particles container (background) -->
+  <div class="particles" id="particles"></div>
+
+  <!-- Envelope -->
+  <div class="envelope" onclick="openLetter(); drawJHeart();"></div>
+
+  <!-- Letter Text Box -->
+  <div class="letter" id="letter">
+    <h2>Dear Rakhi 💌</h2>
+    <p>
+      Thume kabhi pura likhu 
+      Fir kabhi adhura likhu 
+      Mai raaton ko baith ke thume sawera likhu
+      Mai jb bhi likhu bs itna likhu 
+      Khud to tera or tujhko mera likhu 🙈
+    </p>
+  </div>
+
+  <script>
+    function openLetter() {
+      document.getElementById("letter").classList.add("show");
+    }
+
+    // Draw many small hearts along a heart-shaped parametric curve
+    function drawJHeart() {
+      const container = document.getElementById('particles');
+      const n = 120; // number of small hearts
+      const rect = document.body.getBoundingClientRect();
+      const cx = rect.width * 0.5; // center x
+      const cy = rect.height * 0.55; // center y (slightly lower)
+      const scale = Math.min(rect.width, rect.height) / 60; // scale of the shape
+
+      for (let i = 0; i < n; i++) {
+        // t from 0..2PI but bias to create a 'J'-like curve by rotating and offsetting
+        const t = (i / n) * Math.PI * 2;
+
+        // Classic heart parametric equation
+        const x = 16 * Math.pow(Math.sin(t), 3);
+        const y = 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t);
+
+        // Position and slight rotation to make the heart look like a 'J' outline
+        const px = cx + x * scale;
+        const py = cy - y * scale;
+
+        const el = document.createElement('div');
+        el.className = 'heart';
+        // center the 12x12 heart at the computed point
+        el.style.left = (px - 6) + 'px';
+        el.style.top = (py - 6) + 'px';
+
+        // Stagger the animation slightly
+        const delay = (i * 12) + Math.random() * 120;
+        el.style.animationDelay = delay + 'ms';
+
+        // slight size variation
+        const s = 0.6 + Math.random() * 0.9;
+        el.style.transform = `rotate(45deg) scale(${s})`;
+
+        container.appendChild(el);
+
+        // remove after animation
+        setTimeout(() => el.remove(), 3600 + delay);
+      }
+    }
+  </script>
+
+</body>
+</html>

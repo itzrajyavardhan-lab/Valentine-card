@@ -1,0 +1,32 @@
+<link rel="stylesheet" href="letter.css">
+/* Envelope body */
+.envelope-body {
+  background-color: #ff6f91;
+}
+
+/* Envelope flap */
+.envelope-flap {
+  background-color: #ff4d6d;
+}
+.letter {
+  color: #4a0e2e;
+  font-size: 18px;
+  font-family: 'Poppins', sans-serif;
+  line-height: 1.6;
+}
+
+.letter h1 {
+  color: #9d0208;
+}
+
+.letter p {
+  color: #6a040f;
+}
+<body class="letter-page">
+.letter-page .envelope-body {
+  background-color: #ff6f91;
+}
+
+.letter-page .letter {
+  color: #4a0e2e;
+}
