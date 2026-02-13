@@ -25,6 +25,7 @@ body {
 .card img {
     height: 100px;
     width: 100px;
+    max-width:1000px;
     background-size: cover;
     background-position: center;
 }
@@ -123,6 +124,11 @@ p {
     transform: translateY(0);
   }
   50% {
+      img {
+  max-width: 100%;
+  height: auto;
+}
+
     transform: translateY(-10px);
   }
 }
